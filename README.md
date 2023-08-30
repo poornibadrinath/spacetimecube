@@ -1,2 +1,1 @@
-# spacetimecube
-spacetimecubetest
+# 3DMinardMap
