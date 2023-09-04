@@ -365,7 +365,7 @@ function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geome
 async function createFlows() {
 
     //const data = await d3.json("data/minardData.json");
-    const data_raw = await d3.json("https://raw.githubusercontent.com/poornibadrinath/3DMinardMap/gh-page/bengalurumodes.json");
+    const data_raw = await d3.json("https://raw.githubusercontent.com/poornibadrinath/spacetimecube/gh-pages/amsfinal.json");
 
     const data = d3.group(data_raw, d=>d.route);
     //console.log(data);
