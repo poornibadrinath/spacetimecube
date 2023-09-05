@@ -187,15 +187,15 @@ function convert2D(vertex) {
     return new THREE.Vector2(vertex[0], vertex[1]);
 }
 
-function drawCylinderLines(vertices,durations,coor) {//,troops,temperatures
+function drawCylinderLines(vertices,durations,coor) {//,routes,durations
 
     var vertex, geometry, material, mesh;
     var max = d3.max(durations);
     var min = d3.min(durations);
     console.log(max, min)
 
-    //set the range of troops
-    var trooplinear = d3.scaleLinear([min, max],[2, 30] );
+    //set the range of routes
+    var trooplinear = d3.scaleLinear([min, max],[2, 10] );
     var temperaturelinear = d3.scaleLinear([d3.min(durations), d3.max(durations)], [ "blue","red"]);
 
     var segments = new THREE.Object3D();
@@ -225,13 +225,13 @@ function drawCylinderLines(vertices,durations,coor) {//,troops,temperatures
     return segments;
 }
 
-function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geometry, material, mesh;
-    var max = d3.max(troops);
-    var min = d3.min(troops);
+function drawLinesOnPlane(vertices,durations,coor) { var vertex, geometry, material, mesh;
+    var max = d3.max(durations);
+    var min = d3.min(durations);
 
-    //set the range of troops
+    //set the range of routes
     var trooplinear = d3.scaleLinear([min, max], [2, 20]);
-    var temperaturelinear = d3.scaleLinear([d3.min(temperatures), d3.max(temperatures)], [ "blue","red"]);
+    var temperaturelinear = d3.scaleLinear([d3.min(durations), d3.max(durations)], [ "green","purple"]);
 
     var segments = new THREE.Object3D();
     vertices = vertices.map(convert2D);
@@ -240,7 +240,7 @@ function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geome
     var pointlast2 = new THREE.Vector2(vertices[0].x,vertices[0].y);
 
     for (var i = 0, len = vertices.length; i < len - 2; i++) {
-        var color = temperaturelinear(temperatures[i]);
+        var color = temperaturelinear(durations[i]);
         vertex = vertices[i];
 
         var vector1 = new THREE.Vector2 ( vertices[i+1].x - vertices[i].x , vertices[i+1].y - vertices[i].y );
@@ -256,10 +256,10 @@ function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geome
         var angleX = Math.sin(angle);
         var angleY = Math.cos(angle);
 
-        var pointtemp1 = new THREE.Vector2( vertices[i+1].x - trooplinear(troops[i+1])/2 * angleX,
-            vertices[i+1].y + trooplinear(troops[i+1])/2 * angleY );
-        var pointtemp2 = new THREE.Vector2( vertices[i+1].x + trooplinear(troops[i+1])/2 * angleX,
-            vertices[i+1].y - trooplinear(troops[i+1])/2 * angleY );
+        var pointtemp1 = new THREE.Vector2( vertices[i+1].x - trooplinear(durations[i+1])/2 * angleX,
+            vertices[i+1].y + trooplinear(durations[i+1])/2 * angleY );
+        var pointtemp2 = new THREE.Vector2( vertices[i+1].x + trooplinear(durations[i+1])/2 * angleX,
+            vertices[i+1].y - trooplinear(durations[i+1])/2 * angleY );
 
 
 
