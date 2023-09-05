@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>My first three.js app</title>
+
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    
+    <div id="legend" class="legend">
+  <h3>Legend</h3>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: purple;"></div>
+    <div class="legend-label">Low time/less delay</div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: red;"></div>
+    <div class="legend-label">Higher time/more delay</div>
+  </div>
+  div class="legend-item">
+    <div class="legend-color" style="background-color: rgb(214, 23, 23);"></div>
+    <div class="legend-label">Driving</div>
+  </div>
+  div class="legend-item">
+    <div class="legend-color" style="background-color: rgb(142, 15, 180);"></div>
+    <div class="legend-label">Public Transport</div>
+  </div>
+</div>
+
+    <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@v0.154.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@v0.154.0/examples/jsm/"
+    }
+  }
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<script type="module" src="spacetimecubeblr.js"></script>
+</body>
+</html>
