@@ -6,7 +6,7 @@ import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
 
 
 
-// initial elements of the space time cube
+// initial elements of the 3D scene
 var controls, camera, glScene, cssScene, glRenderer, cssRenderer;
 var theMap = null;
 
@@ -14,7 +14,10 @@ var map_length, map_width, map_height;
 map_length = 2800;
 map_width = 2400;
 map_height = 2000;
+//var map_center = {lat: 54.875 , lng: 30.9};
 var map_center = {lat: 12.974851 , lng: 77.618414};
+//var map_center = {lat: 52.3552 , lng: 4.8957};
+//var map_scale = 7;
 var map_scale = 13;
 
 
@@ -172,7 +175,7 @@ function creatAixs(){
     const geometry = new THREE.BufferGeometry().setFromPoints( points );
     const line = new THREE.Line( geometry, material );
     //add all the element to sence
-    glScene.add( line);
+    glScene.add(line);
 
 }
 
@@ -192,8 +195,8 @@ function drawCylinderLines(vertices,durations,coor) {//,troops,temperatures
     console.log(max, min)
 
     //set the range of troops
-    var trooplinear = d3.scaleLinear([min, max],[2, 30] );
-    var temperaturelinear = d3.scaleLinear([d3.min(durations), d3.max(durations)], [ "blue","red"]);
+    var trooplinear = d3.scaleLinear([min, max],[20, 10] );
+    var temperaturelinear = d3.scaleLinear([d3.min(durations), d3.max(durations)], [ "purple","red"]);
 
     var segments = new THREE.Object3D();
     vertices = vertices.map(convert);
@@ -205,7 +208,7 @@ function drawCylinderLines(vertices,durations,coor) {//,troops,temperatures
         var color = temperaturelinear(durations[i]);
         vertex = vertices[i];
 
-        geometry = new THREE.TubeGeometry(path, 4 ,trooplinear(durations[i]) ,16);
+        geometry = new THREE.TubeGeometry(path, 16 ,trooplinear(durations[i]) ,8);
         material = new THREE.MeshLambertMaterial({
             opacity: 1,
             transparent: true,
@@ -222,13 +225,13 @@ function drawCylinderLines(vertices,durations,coor) {//,troops,temperatures
     return segments;
 }
 
-function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geometry, material, mesh;
-    var max = d3.max(troops);
-    var min = d3.min(troops);
+function drawLinesOnPlane(vertices,durations,coor) { var vertex, geometry, material, mesh;
+    var max = d3.max(durations);
+    var min = d3.min(durations);
 
     //set the range of troops
-    var trooplinear = d3.scaleLinear([min, max], [2, 20]);
-    var temperaturelinear = d3.scaleLinear([d3.min(temperatures), d3.max(temperatures)], [ "blue","red"]);
+    var trooplinear = d3.scaleLinear([min, max], [20, 1]);
+    var temperaturelinear = d3.scaleLinear([d3.min(durations), d3.max(durations)], [ "green","purple"]);
 
     var segments = new THREE.Object3D();
     vertices = vertices.map(convert2D);
@@ -237,7 +240,7 @@ function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geome
     var pointlast2 = new THREE.Vector2(vertices[0].x,vertices[0].y);
 
     for (var i = 0, len = vertices.length; i < len - 2; i++) {
-        var color = temperaturelinear(temperatures[i]);
+        var color = temperaturelinear(durations[i]);
         vertex = vertices[i];
 
         var vector1 = new THREE.Vector2 ( vertices[i+1].x - vertices[i].x , vertices[i+1].y - vertices[i].y );
@@ -253,10 +256,10 @@ function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geome
         var angleX = Math.sin(angle);
         var angleY = Math.cos(angle);
 
-        var pointtemp1 = new THREE.Vector2( vertices[i+1].x - trooplinear(troops[i+1])/2 * angleX,
-            vertices[i+1].y + trooplinear(troops[i+1])/2 * angleY );
-        var pointtemp2 = new THREE.Vector2( vertices[i+1].x + trooplinear(troops[i+1])/2 * angleX,
-            vertices[i+1].y - trooplinear(troops[i+1])/2 * angleY );
+        var pointtemp1 = new THREE.Vector2( vertices[i+1].x - trooplinear(durations[i+1])/2 * angleX,
+            vertices[i+1].y + trooplinear(durations[i+1])/2 * angleY );
+        var pointtemp2 = new THREE.Vector2( vertices[i+1].x + trooplinear(durations[i+1])/2 * angleX,
+            vertices[i+1].y - trooplinear(durations[i+1])/2 * angleY );
 
 
 
@@ -306,6 +309,8 @@ function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geome
 
         var flowShape = new THREE.Shape(californiaPts);
         var geometry = new THREE.ShapeGeometry( flowShape );
+        
+        var label = document.createElement('div');
 
 
         var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color: color, side: THREE.DoubleSide, transparent: true,
@@ -315,8 +320,6 @@ function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geome
 
         pointlast1 = pointtemp1;
         pointlast2 = pointtemp2;
-
-
 
 
     }
@@ -361,8 +364,8 @@ function drawLinesOnPlane(vertices,troops,temperatures,coor) { var vertex, geome
 
 async function createFlows() {
 
-
-    const data_raw = await d3.json("https://raw.githubusercontent.com/poornibadrinath/3DMinardMap/gh-page/bengalurumodes.json");
+    //const data = await d3.json("data/minardData.json");
+    const data_raw = await d3.json("https://raw.githubusercontent.com/poornibadrinath/spacetimecube/gh-pages/blrfinal.json");
 
     const data = d3.group(data_raw, d=>d.route);
     //console.log(data);
@@ -393,7 +396,7 @@ async function createFlows() {
 
             point.x = temp_point.x - pointOrigin.x - map_length/2;
             point.y = 2* point_center.y - temp_point.y - pointOrigin.y - map_width/2 ;
-            //point.z = stop.durationsec*10;
+            point.z = stop.durationsec*10;
             point.z = i*10;
 
             coor.push({lat:stop.latitude, lng:stop.longitude });
@@ -401,8 +404,12 @@ async function createFlows() {
             durations.push(stop.duration);
             //temperatures.push(10);
         }
+        
+        
 
         console.log(coor)
+        
+        
 
 
         var flow_3D = drawCylinderLines(points,durations,coor);
@@ -414,10 +421,8 @@ async function createFlows() {
         glScene.add(flow_2D);
 
     });
-
-
-
-
+   
+    
 
 }
 
