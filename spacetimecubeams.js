@@ -20,6 +20,8 @@ var map_center = {lat: 52.3552 , lng: 4.8957};
 //var map_scale = 7;
 var map_scale = 13;
 
+var hoveredObject = null;
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicG9vcm5pLWJhZHJpbmF0aCIsImEiOiJjanUwbmYzc3UwdDI3NGRtZ3kzMTltbWZpIn0.SB9PEksVcEwWvZJ9A7J9uA';
 
@@ -231,7 +233,7 @@ function drawLinesOnPlane(vertices,durations,coor) { var vertex, geometry, mater
 
     //set the range of routes
     var trooplinear = d3.scaleLinear([min, max], [2, 20]);
-    var temperaturelinear = d3.scaleLinear([d3.min(durations), d3.max(durations)], [ "green","purple"]);
+    var temperaturelinear = d3.scaleLinear([d3.min(durations), d3.max(durations)], ["red","purple"]);
 
     var segments = new THREE.Object3D();
     vertices = vertices.map(convert2D);
@@ -362,6 +364,26 @@ function drawLinesOnPlane(vertices,durations,coor) { var vertex, geometry, mater
     return segments;
 }
 
+flow_3D.traverse(function (child) {
+    // Add event listeners for all objects
+    child.on('mouseenter', function (event) {
+        // Handle hover-in event
+        if (hoveredObject !== this) {
+            hoveredObject = this;
+            // Show label or perform other hover-in actions
+            showLabelForCylinder(this); // Implement this function
+        }
+    });
+    child.on('mouseleave', function (event) {
+        // Handle hover-out event
+        if (hoveredObject === this) {
+            hoveredObject = null;
+            // Hide label or perform other hover-out actions
+            hideLabel(); // Implement this function
+        }
+    });
+});
+
 async function createFlows() {
 
     //const data = await d3.json("data/minardData.json");
@@ -413,8 +435,16 @@ async function createFlows() {
         flow_3D.receiveShadow = true;
         glScene.add(flow_3D);
 
+       // Create a label for this flow
+       const labelText = 'Flow Label Text'; // Replace with your label text
+       const labelPosition = new THREE.Vector3(points[0][0], points[0][1], points[0][2] + 20); // Adjust Z position
+
+       // Add hover event listeners to show/hide the label for 3D cylinders only
+       addHoverListeners(flow_3D, createLabel(labelText, labelPosition));
+
         var flow_2D = drawLinesOnPlane(points,durations,coor);
         glScene.add(flow_2D);
+        
 
     });
 
