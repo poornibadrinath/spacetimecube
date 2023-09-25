@@ -231,7 +231,7 @@ function drawLinesOnPlane(vertices,durations,coor) { var vertex, geometry, mater
 
     //set the range of troops
     var trooplinear = d3.scaleLinear([min, max], [20, 1]);
-    var temperaturelinear = d3.scaleLinear([d3.min(durations), d3.max(durations)], [ "green","purple"]);
+    var temperaturelinear = d3.scaleLinear([d3.min(durations), d3.max(durations)], ["red","purple"]);
 
     var segments = new THREE.Object3D();
     vertices = vertices.map(convert2D);
