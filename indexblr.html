@@ -8,38 +8,50 @@
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/renderers/CSS3DRenderer.js"></script>
     
+    <!-- Legend for map -->
     <div id="legend" class="legend">
-  <h3>Legend</h3>
-  <div class="legend-item">
-    <div class="legend-color" style="background-color: purple;"></div>
-    <div class="legend-label">Low time/less delay</div>
-  </div>
-  <div class="legend-item">
-    <div class="legend-color" style="background-color: red;"></div>
-    <div class="legend-label">Higher time/more delay</div>
-  </div>
-  <div class="legend-item">
-    <div class="legend-color" style="background-color: rgb(214, 23, 23);"></div>
-    <div class="legend-label">Driving</div>
-  </div>
-  <div class="legend-item">
-    <div class="legend-color" style="background-color: rgb(142, 15, 180);"></div>
-    <div class="legend-label">Public Transport</div>
-  </div>
-</div>
+      <h3>Legend</h3>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: purple;"></div>
+        <div class="legend-label">Low time/less delay</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: red;"></div>
+        <div class="legend-label">Higher time/more delay</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: rgb(214, 23, 23);"></div>
+        <div class="legend-label">Driving</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: rgb(142, 15, 180);"></div>
+        <div class="legend-label">Public Transport</div>
+      </div>
+    </div>
+    
+    <!-- Route Information Legend -->
+    <div id="route-legend" class="route-legend">
+      <h3>Route Information</h3>
+      <p><strong>Route:</strong> Yeshwantpur to Domlur</p>
+      <p><strong>Kilometres:</strong> 18.2 (PT), 18.4 (Driving)</p>
+      <p><strong>Modes of Transport:</strong> 2: Driving and Public Transport</p>
+      <p><strong>Time in Minutes:</strong> Driving: 80 | Metro: 38 (Changes Included)</p>
+      <p><strong>Route Hour:</strong> Peak Hour</p>
+    </div>
 
     <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@v0.154.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@v0.154.0/examples/jsm/"
-    }
-  }
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@v0.154.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@v0.154.0/examples/jsm/"
+        }
+      }
     </script>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<script type="module" src="spacetimecubeblr.js"></script>
+  <script type="module" src="spacetimecubeblr.js"></script>
 </body>
 </html>
